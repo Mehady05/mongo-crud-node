@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="/addProduct" method="post">
+        <input type="text" name="name" id="" placeholder="name">
+        <button type="submit">add name</button>
+    </form>
+    <div id="product"></div>
+    
+    <script>
+        fetch('/products')
+        .then(res => res.json())
+        .then(data => {
+            console.log(data)
+            const container = document.getElementById('product');
+            data.forEach(pd => {
+                const item = document.createElement('p');
+                item.innerHTML = `Name : ${pd.name}
+                <button onclick="deleteName('${pd._id}')">Delete Name</button>
+                `
+                container.appendChild(item)
+            })
+        })
+        function deleteName(id){
+           fetch(`/delete/${id}`,{
+               method: "DELETE"
+           })
+           .then(res => res.json())
+           .then(res => {
+               console.log('deleted successfully')
+           })
+        }
+    </script>
+</body>
+</html>
